@@ -7,6 +7,4 @@ const generalError = "Input Error";
 const exists = "Already Exists";
 const notFound = "Not Found";
 
-const ADMIN_PASSWORD = "LULA";
-
-module.exports = { serverError, noAuth, generalError, exists, notFound, ADMIN_PASSWORD };
+module.exports = { serverError, noAuth, generalError, exists, notFound };

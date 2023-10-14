@@ -4,7 +4,7 @@ const cors = require("cors");
 const { errorHandler } = require("./middlewares/errorHandler");
 const app = express();
 
-const port = 8080;
+const port = process.env.PORT || 3000;
 
 // Routers Declaration
 const groceryRouter = require("./routers/groceryRouter");
