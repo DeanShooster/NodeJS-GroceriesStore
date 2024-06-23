@@ -4,13 +4,14 @@ const ShoppingList = require("../database/model/ShoppingList");
 const { adminAuth } = require("../middlewares/authentication");
 const { GroceryError } = require("../middlewares/errorHandler");
 const { serverError, exists, notFound } = require("../constants/general");
+const { groceryRouters } = require("./config");
 
 const router = express.Router();
 
 //--------------------------------------------------------------- GET REQUESTS --------------------------------------------------------------- //
 
 // Returns the GroceryList Object: { groceryStoreList , shoppingList }.
-router.get("/groceries", async (req, res, next) => {
+router.get(`${groceryRouters.Groceries.path}`, async (req, res, next) => {
   try {
     const storeList = await StoreList.find(),
       shoppingList = await ShoppingList.find();
@@ -24,7 +25,7 @@ router.get("/groceries", async (req, res, next) => {
 //--------------------------------------------------------------- POST REQUESTS --------------------------------------------------------------- //
 
 // Adds a grocery item to the GroceryList -> shoppingList.
-router.post("/cart", async (req, res, next) => {
+router.post(`${groceryRouters.Cart.path}`, async (req, res, next) => {
   try {
     const { groceryItemName } = req.body;
 
@@ -50,7 +51,7 @@ router.post("/cart", async (req, res, next) => {
 //--------------------------------------------------------------- DELETE REQUESTS --------------------------------------------------------------- //
 
 // Removes an item from GroceryList -> shoppingList.
-router.delete("/cart", async (req, res, next) => {
+router.delete(`${groceryRouters.Cart.path}`, async (req, res, next) => {
   try {
     const { groceryItemName } = req.body;
 
@@ -71,7 +72,7 @@ router.delete("/cart", async (req, res, next) => {
 
 //--------------------------------------------------------------- ADMIN REQUESTS --------------------------------------------------------------- //
 
-router.post("/admin-add-store-item", adminAuth, async (req, res, next) => {
+router.post(`${groceryRouters.Admin.addItem}`, adminAuth, async (req, res, next) => {
   try {
     const { item } = req.body;
 

@@ -1,5 +1,9 @@
+const jwt = require("jsonwebtoken");
+
 const { noAuth, generalError } = require("../constants/general");
-const { GroceryError } = require("./errorHandler");
+
+const BabyMonitor = require("../database/model/BabyMonitor");
+const { GroceryError, BabyMonitorError } = require("./errorHandler");
 
 const adminAuth = async (req, res, next) => {
   try {
@@ -12,4 +16,20 @@ const adminAuth = async (req, res, next) => {
   }
 };
 
-module.exports = { adminAuth };
+const babyMonitorAuth = async (req, res, next) => {
+  try {
+    const { token } = req.headers;
+    const decoded = jwt.verify(token, process.env.SECRET);
+
+    const babyMonitor = await BabyMonitor.findOne({ motherName: decoded.motherName });
+    if (!babyMonitor) return next(new BabyMonitorError(errorMessages.noAuth, 401));
+
+    req.babyMonitor = babyMonitor;
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { adminAuth, babyMonitorAuth };
