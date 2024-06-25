@@ -80,9 +80,9 @@ router.patch(`${babyMonitorRouters.Information.path}`, babyMonitorAuth, async (r
 router.put(`${babyMonitorRouters.Information.path}${babyMonitorRouters.Information.subPaths.avatar}`, babyMonitorAuth, upload.single("avatar"), async (req, res, next) => {
   try {
     const avatar = req.file;
-    const encodedAvatar = avatar.buffer.toString("base64");
     if (!avatar) return next(new BabyMonitorError(generalError, 500));
 
+    const encodedAvatar = avatar.buffer.toString("base64");
     const { babyMonitor } = req;
     babyMonitor.avatar = encodedAvatar;
 
@@ -90,6 +90,7 @@ router.put(`${babyMonitorRouters.Information.path}${babyMonitorRouters.Informati
 
     res.send({ babyMonitor });
   } catch (e) {
+    console.log(e);
     next(e);
   }
 });
