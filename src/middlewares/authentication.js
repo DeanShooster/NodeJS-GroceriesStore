@@ -22,7 +22,7 @@ const babyMonitorAuth = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.SECRET);
 
     const babyMonitor = await BabyMonitor.findOne({ motherName: decoded.motherName });
-    if (!babyMonitor) return next(new BabyMonitorError(errorMessages.noAuth, 401));
+    if (!babyMonitor) return next(new BabyMonitorError(noAuth, 403));
 
     req.babyMonitor = babyMonitor;
 

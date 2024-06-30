@@ -97,6 +97,21 @@ router.post(`${babyMonitorRouters.Information.path}${babyMonitorRouters.Informat
   }
 });
 
+/**
+ * Updates Monitor > Feed.
+ * If daily update doesn't exist adds a new monitor otherwise edits daily monitor.
+ * Updates Feed array.
+ * Returns BabyMonitor
+ */
+router.post(`${babyMonitorRouters.Information.path}${babyMonitorRouters.Information.subPaths.feed}`, babyMonitorAuth, addItemToMonitor, async (req, res, next) => {
+  try {
+    const { babyMonitor } = req;
+    res.send({ babyMonitor });
+  } catch (e) {
+    next(e);
+  }
+});
+
 //--------------------------------------------------------------- PATCH REQUESTS --------------------------------------------------------------- //
 
 /**

@@ -23,6 +23,7 @@ const babyMonitorRouters = {
       avatar: "/avatar",
       diaper: "/diaper",
       sleep: "/sleep",
+      feed: "/feed",
     },
   },
 };
