@@ -19,8 +19,7 @@ const babyMonitorSchema = new mongoose.Schema({
       date: { type: Date, required: true },
       feeding: [
         {
-          startTime: { type: Date, required: true },
-          endTime: { type: Date },
+          time: { type: Date, required: true },
           isBottle: { type: Boolean, required: true },
           note: { type: String },
         },

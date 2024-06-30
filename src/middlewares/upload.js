@@ -4,7 +4,7 @@ const { BabyMonitorError } = require("./errorHandler");
 const storage = multer.memoryStorage();
 
 const upload = multer({
-  limits: { fileSize: 1024 * 1024 * 10 }, // Max 10MB
+  limits: { fileSize: 1024 * 1024 * 5 }, // Max 5MB
   storage,
   fileFilter: (req, file, cb) => {
     const filetypes = /jpeg|jpg|png|gif/;

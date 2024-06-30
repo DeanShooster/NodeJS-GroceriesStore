@@ -21,6 +21,8 @@ const babyMonitorRouters = {
     path: "/information",
     subPaths: {
       avatar: "/avatar",
+      diaper: "/diaper",
+      sleep: "/sleep",
     },
   },
 };
