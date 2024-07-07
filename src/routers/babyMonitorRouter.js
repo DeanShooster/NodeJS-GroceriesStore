@@ -122,11 +122,12 @@ router.post(`${babyMonitorRouters.Information.path}${babyMonitorRouters.Informat
 router.patch(`${babyMonitorRouters.Information.path}`, babyMonitorAuth, async (req, res, next) => {
   try {
     const { babyMonitor } = req;
-    const { weight, height, birthDate } = req.body;
+    const { weight, height, birthDate, lastUpdate } = req.body;
 
     if (isValidWeight(weight)) babyMonitor.information.weight.push(weight);
     if (isValidHeight(height)) babyMonitor.information.height.push(height);
     if (isValidAge(birthDate)) babyMonitor.information.birthDate = birthDate;
+    babyMonitor.information.lastUpdate = lastUpdate;
 
     await babyMonitor.save();
 

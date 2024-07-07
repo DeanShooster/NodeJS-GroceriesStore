@@ -13,6 +13,7 @@ const babyMonitorSchema = new mongoose.Schema({
     weight: [{ type: Number, default: [] }],
     height: [{ type: Number, default: [] }],
     birthDate: { type: Date, default: null },
+    lastUpdate: { type: Date, default: null },
   },
   monitor: [
     {

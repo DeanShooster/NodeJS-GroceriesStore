@@ -12,6 +12,7 @@ function isValidHeight(height) {
 }
 
 function isValidAge(birthDate) {
+  if (!birthDate) return false;
   const today = new Date();
   const babyBirthDate = new Date(birthDate);
 
