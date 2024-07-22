@@ -1,5 +1,5 @@
 const { BabyMonitorError } = require("./errorHandler");
-const { isSameDay, isDayBefore } = require("../utils/date");
+const { isSameDay } = require("../utils/date");
 const { generalError } = require("../constants/general");
 
 const addItemToMonitor = async (req, res, next) => {
@@ -62,13 +62,17 @@ const addItemToMonitor = async (req, res, next) => {
       // SLEEP LOGIC
       const { startTime, endTime, note } = req.body;
       if (!startTime && !endTime) return next(new BabyMonitorError(generalError, 400));
-      const index = babyMonitor.monitor.findIndex(
-        (item) => isSameDay(new Date(item.date), new Date(startTime || endTime)) || isDayBefore(new Date(item.date), new Date(startTime || endTime))
-      );
+      const index = babyMonitor.monitor.findIndex((item) => isSameDay(new Date(item.date), new Date(startTime || endTime)));
       if (index > -1) {
         const { sleep } = babyMonitor.monitor[index];
         if (sleep.length === 0) {
-          if (endTime) return next(new BabyMonitorError(generalError, 400));
+          if (endTime) {
+            const yesterdayLastSleepItem = babyMonitor.monitor[index - 1]?.sleep[babyMonitor.monitor[index - 1]?.sleep?.length - 1];
+            if (yesterdayLastSleepItem && yesterdayLastSleepItem.startTime && !yesterdayLastSleepItem.endTime) {
+              yesterdayLastSleepItem.endTime = endTime;
+              yesterdayLastSleepItem.note = note;
+            } else return next(new BabyMonitorError(generalError, 400));
+          }
           sleep.push({
             startTime,
             note,
@@ -76,8 +80,8 @@ const addItemToMonitor = async (req, res, next) => {
         } else {
           const lastSleepItem = sleep[sleep.length - 1];
           if (startTime) {
-            if (lastSleepItem.startTime && lastSleepItem.endTime) return next(new BabyMonitorError(generalError, 400));
-            else sleep.push({ startTime, note });
+            if (lastSleepItem.startTime && lastSleepItem.endTime) sleep.push({ startTime, note });
+            else return next(new BabyMonitorError(generalError, 400));
           } else {
             if (lastSleepItem.startTime && !lastSleepItem.endTime) {
               lastSleepItem.endTime = endTime;
