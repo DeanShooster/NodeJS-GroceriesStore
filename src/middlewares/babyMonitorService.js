@@ -1,5 +1,5 @@
 const { BabyMonitorError } = require("./errorHandler");
-const { isSameDay } = require("../utils/date");
+const { isSameDay, isDayBefore } = require("../utils/date");
 const { generalError } = require("../constants/general");
 
 const addItemToMonitor = async (req, res, next) => {
@@ -62,7 +62,9 @@ const addItemToMonitor = async (req, res, next) => {
       // SLEEP LOGIC
       const { startTime, endTime, note } = req.body;
       if (!startTime && !endTime) return next(new BabyMonitorError(generalError, 400));
-      const index = babyMonitor.monitor.findIndex((item) => isSameDay(new Date(item.date), new Date(startTime || endTime)));
+      const index = babyMonitor.monitor.findIndex(
+        (item) => isSameDay(new Date(item.date), new Date(startTime || endTime)) || isDayBefore(new Date(item.date), new Date(startTime || endTime))
+      );
       if (index > -1) {
         const { sleep } = babyMonitor.monitor[index];
         if (sleep.length === 0) {
