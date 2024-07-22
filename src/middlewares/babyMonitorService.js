@@ -76,8 +76,8 @@ const addItemToMonitor = async (req, res, next) => {
         } else {
           const lastSleepItem = sleep[sleep.length - 1];
           if (startTime) {
-            if (lastSleepItem.startTime && lastSleepItem.endTime) sleep.push({ startTime, note });
-            else return next(new BabyMonitorError(generalError, 400));
+            if (lastSleepItem.startTime && lastSleepItem.endTime) return next(new BabyMonitorError(generalError, 400));
+            else sleep.push({ startTime, note });
           } else {
             if (lastSleepItem.startTime && !lastSleepItem.endTime) {
               lastSleepItem.endTime = endTime;
