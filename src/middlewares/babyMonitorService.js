@@ -32,14 +32,15 @@ const addItemToMonitor = async (req, res, next) => {
         };
         babyMonitor.monitor.push(newMonitor);
       }
-    } else if (req.body.isBottle !== undefined) {
+    } else if (req.body.feed !== undefined) {
       // Bottle logics
-      const { isBottle, time, note } = req.body;
-      if (isBottle === undefined || !time) return next(new BabyMonitorError(generalError, 400));
+      const { feed, time, note } = req.body;
+      if (feed === undefined || !time) return next(new BabyMonitorError(generalError, 400));
       const index = babyMonitor.monitor.findIndex((item) => isSameDay(new Date(item.date), new Date(time)));
       if (index > -1) {
         babyMonitor.monitor[index].feeding.push({
-          isBottle,
+          isBottle: feed === "BOTTLE",
+          isRealFood: feed === "REAL_FOOD",
           time,
           note,
         });
@@ -49,7 +50,8 @@ const addItemToMonitor = async (req, res, next) => {
           sleep: [],
           feeding: [
             {
-              isBottle,
+              isBottle: feed === "BOTTLE",
+              isRealFood: feed === "REAL_FOOD",
               time,
               note,
             },

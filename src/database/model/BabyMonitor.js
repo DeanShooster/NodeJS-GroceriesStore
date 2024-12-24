@@ -21,7 +21,8 @@ const babyMonitorSchema = new mongoose.Schema({
       feeding: [
         {
           time: { type: Date, required: true },
-          isBottle: { type: Boolean, required: true },
+          isBottle: { type: Boolean },
+          isRealFood: { type: Boolean },
           note: { type: String },
         },
       ],
